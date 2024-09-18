@@ -1,6 +1,7 @@
 package com.etiya.workshoppair2.controller;
 
 
+import com.etiya.workshoppair2.dto.product.*;
 import com.etiya.workshoppair2.entity.Product;
 import com.etiya.workshoppair2.service.abstracts.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +21,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/getAll")
-    public List<Product> getAll() {
+    public List<GetAllProductResponse> getAll() {
 
         return productService.getAll();
     }
 
     @GetMapping("/getById")
-    public ResponseEntity<Product> getById(@RequestParam int id) {
+    public ResponseEntity<GetByIdProductResponse> getById(@RequestParam int id) {
         if (productService.getById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -35,8 +36,9 @@ public class ProductController {
 
     @PostMapping("/create")
 
-    public ResponseEntity<Product> add(@RequestBody Product product) {
-        Product savedProduct = productService.add(product);
+    public ResponseEntity<CreateProductResponse> add(@RequestBody CreateProductRequest request) {
+
+        CreateProductResponse savedProduct = productService.add(request);
         if (savedProduct != null) {
             return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
         }
@@ -47,14 +49,13 @@ public class ProductController {
 
     @DeleteMapping("/delete")
 
-    public void delete(@RequestParam int id){
-        productService.delete(id);
+    public DeleteProductResponse delete(@RequestParam int id){
+        return productService.delete(id);
     }
 
     @PutMapping("/update")
-  public Product update(@RequestBody Product product){
-        return productService.update(product);
-
+    public UpdateProductResponse update(@RequestBody UpdateProductRequest request){
+        return productService.update(request);
 
   }
 

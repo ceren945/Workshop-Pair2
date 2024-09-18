@@ -51,8 +51,8 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public void delete(int id) {
+    public Product delete(int id) {
         products.removeIf(product -> product.getId() == id);
-
+        return getById(id);
     }
 }
