@@ -19,7 +19,6 @@ public class UpdateCategoryRequest {
     private String name;
 
     @NotNull
-    @NotBlank
     @Positive
     private int id;
 }

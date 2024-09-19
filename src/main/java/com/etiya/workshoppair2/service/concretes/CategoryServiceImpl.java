@@ -1,5 +1,6 @@
 package com.etiya.workshoppair2.service.concretes;
 
+import com.etiya.workshoppair2.core.exception.type.BusinessException;
 import com.etiya.workshoppair2.dto.category.*;
 import com.etiya.workshoppair2.dto.product.GetAllProductResponse;
 import com.etiya.workshoppair2.entity.Category;
@@ -27,9 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<GetAllCategoryResponse> getAll() {
         List<Category> categories = categoryRepository.getAll();
-        List<GetAllCategoryResponse> response=CategoryMapper.INSTANCE.categoryFromGetAllResponse(categories);
-
-         return response;
+        return CategoryMapper.INSTANCE.categoryFromGetAllResponse(categories);
     }
 
     @Override
@@ -43,6 +42,14 @@ public class CategoryServiceImpl implements CategoryService {
         Random random = new Random();
         Category category = CategoryMapper.INSTANCE.categoryFromCreateRequest(request);
         category.setId(random.nextInt(1,9999));
+
+        boolean categoryWithSameName = categoryRepository.getAll()
+                .stream()
+                .anyMatch(c -> c.getName().equals(category.getName()));
+
+        if(categoryWithSameName)
+            throw new BusinessException("Böyle bir kategori zaten var");
+
         categoryRepository.add(category);
         return CategoryMapper.INSTANCE.categoryFromCreateResponse(category);
     }
@@ -50,11 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public UpdateCategoryResponse update(UpdateCategoryRequest request) {
         Category category = CategoryMapper.INSTANCE.categoryFromUpdateRequest(request);
-        Category updatedCategory = categoryRepository.update(category);
-
-        if (updatedCategory == null) {
-            throw new RuntimeException("Ürün bulunamadı");
-        }
+        categoryRepository.update(category);
 
         return CategoryMapper.INSTANCE.categoryFromUpdateResponse(category);
     }

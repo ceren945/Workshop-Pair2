@@ -17,17 +17,14 @@ public class CreateProductRequest {
     private String name;
 
     @NotNull
-    @NotBlank
     @PositiveOrZero
     private double unitPrice;
 
     @NotNull
-    @NotBlank
     @PositiveOrZero
     private int unitsInStock;
 
     @NotNull
-    @NotBlank
     @Positive
     private int categoryId;
 }

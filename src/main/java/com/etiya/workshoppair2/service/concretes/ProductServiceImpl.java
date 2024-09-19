@@ -1,5 +1,6 @@
 package com.etiya.workshoppair2.service.concretes;
 
+import com.etiya.workshoppair2.core.exception.type.BusinessException;
 import com.etiya.workshoppair2.dto.category.GetAllCategoryResponse;
 import com.etiya.workshoppair2.dto.product.*;
 import com.etiya.workshoppair2.entity.Category;
@@ -26,7 +27,6 @@ public class ProductServiceImpl implements ProductService {
     private  ProductRepository productRepository;
 
 
-
     @Override
     public List<GetAllProductResponse> getAll() {
         List<Product> products = productRepository.getAll();
@@ -45,26 +45,41 @@ public class ProductServiceImpl implements ProductService {
         Random random = new Random();
         Product product = ProductMapper.INSTANCE.productFromCreateRequest(request);
         product.setId(random.nextInt(1,9999));
+
+        boolean productWithSameName = productRepository.getAll()
+                .stream()
+                .anyMatch(p -> p.getName().equals(product.getName()));
+
+        if(productWithSameName)
+            throw new BusinessException("Böyle bir ürün zaten var");
+
+
+
         productRepository.add(product);
        return ProductMapper.INSTANCE.productFromCreateResponse(product);
     }
 
     @Override
     public UpdateProductResponse update(UpdateProductRequest request) {
+        Product oldProduct = productRepository.getById(request.getId());
         Product product = ProductMapper.INSTANCE.productFromUpdateRequest(request);
-        Product updatedProduct = productRepository.update(product);
 
-        if (updatedProduct == null) {
-            throw new RuntimeException("Ürün bulunamadı");
-        }
+        if(request.getUnitsInStock() - oldProduct.getUnitsInStock() > 100)
+            throw new BusinessException("Stok adedi tek seferde maksimum 100 adet artırılabilir");
 
+        productRepository.update(product);
         return ProductMapper.INSTANCE.productFromUpdateResponse(product);
     }
 
     @Override
     public DeleteProductResponse delete(int id) {
 
+
         Product product = productRepository.getById(id);
+
+        if(product == null)
+            throw new BusinessException("Ürün Bulunamadı");
+
         productRepository.delete(id);
         return ProductMapper.INSTANCE.productFromDeleteResponse(product);
 

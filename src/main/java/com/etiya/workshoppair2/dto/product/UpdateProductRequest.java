@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateProductRequest {
     @NotNull
-    @NotBlank
     @Positive
     private int id;
 
@@ -22,12 +21,10 @@ public class UpdateProductRequest {
     private String name;
 
     @NotNull
-    @NotBlank
     @PositiveOrZero
     private double unitPrice;
 
     @NotNull
-    @NotBlank
     @PositiveOrZero
     private int unitsInStock;
 }
