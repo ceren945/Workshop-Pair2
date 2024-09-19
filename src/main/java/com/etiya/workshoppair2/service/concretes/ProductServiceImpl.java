@@ -30,11 +30,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<GetAllProductResponse> getAll() {
         List<Product> products = productRepository.getAll();
-        List<GetAllProductResponse> responses = products.stream().map(product ->new
-                GetAllProductResponse(product.getId(),product.getName(),
-                product.getUnitPrice(),product.getCategory().getId())).toList();
-
-        return responses;
+        return ProductMapper.INSTANCE.productFromGetAllResponse(products);
     }
 
     @Override
@@ -42,9 +38,6 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.getById(id);
         return ProductMapper.INSTANCE.productFromGetByIdResponse(product);
     }
-
-
-
 
 
     @Override
@@ -75,13 +68,5 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(id);
         return ProductMapper.INSTANCE.productFromDeleteResponse(product);
 
-    }
-
-    @Override
-    public List<GetAllProductResponse> getByCategoryId(int categoryId) {
-        List<Product> products = productRepository.getAll().stream().filter(product -> product.getCategory().getId()==categoryId).toList();
-        List<GetAllProductResponse> responses = ProductMapper.INSTANCE.productFromGetAllResponse(products);
-
-        return responses;
     }
 }

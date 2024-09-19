@@ -3,6 +3,7 @@ package com.etiya.workshoppair2.controller;
 import com.etiya.workshoppair2.dto.category.*;
 import com.etiya.workshoppair2.dto.product.*;
 import com.etiya.workshoppair2.service.abstracts.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getById(id), HttpStatus.OK);
     }
     @PostMapping("/create")
-
-    public ResponseEntity<CreateCategoryResponse> add(@RequestBody CreateCategoryRequest request) {
+    public ResponseEntity<CreateCategoryResponse> add(@RequestBody @Valid CreateCategoryRequest request) {
 
         CreateCategoryResponse savedCategory = categoryService.add(request);
         if (savedCategory != null) {
@@ -49,7 +49,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update")
-    public UpdateCategoryResponse update(@RequestBody UpdateCategoryRequest request){
+    public UpdateCategoryResponse update(@RequestBody @Valid UpdateCategoryRequest request){
         return categoryService.update(request);
 
     }

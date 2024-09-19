@@ -4,6 +4,7 @@ package com.etiya.workshoppair2.controller;
 import com.etiya.workshoppair2.dto.product.*;
 import com.etiya.workshoppair2.entity.Product;
 import com.etiya.workshoppair2.service.abstracts.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,13 +37,14 @@ public class ProductController {
 
     @PostMapping("/create")
 
-    public ResponseEntity<CreateProductResponse> add(@RequestBody CreateProductRequest request) {
+    public CreateProductResponse add(@RequestBody @Valid CreateProductRequest request) {
 
         CreateProductResponse savedProduct = productService.add(request);
-        if (savedProduct != null) {
-            return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return savedProduct;
+//        if (savedProduct != null) {
+//            return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+//        }
+//        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
@@ -54,14 +56,9 @@ public class ProductController {
     }
 
     @PutMapping("/update")
-    public UpdateProductResponse update(@RequestBody UpdateProductRequest request){
+    public UpdateProductResponse update(@RequestBody @Valid UpdateProductRequest request){
         return productService.update(request);
 
-  }
-
-  @GetMapping
-    public List<GetAllProductResponse> getAllProductsByCategoryId(@RequestParam int categoryId) {
-        return productService.getByCategoryId(categoryId);
   }
 
 

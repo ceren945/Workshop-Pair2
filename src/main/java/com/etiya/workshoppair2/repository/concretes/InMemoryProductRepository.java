@@ -40,7 +40,6 @@ public class InMemoryProductRepository implements ProductRepository {
         return null;
     }
 
-
     @Override
     public Product add(Product product) {
         products.add(product);
@@ -69,8 +68,5 @@ public class InMemoryProductRepository implements ProductRepository {
         return getById(id);
     }
 
-    @Override
-    public List<Product> getByCategory(int categoryId) {
-        return products.stream().filter(product -> product.getCategory().getId()==categoryId).toList();
-    }
+
 }
