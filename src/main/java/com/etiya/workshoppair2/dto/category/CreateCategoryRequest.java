@@ -1,4 +1,4 @@
-package com.etiya.workshoppair2.dto.product;
+package com.etiya.workshoppair2.dto.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateProductRequest {
+public class CreateCategoryRequest {
     private String name;
-    private double unitPrice;
-    private int unitsInStock;
-    private int categoryId;
 }

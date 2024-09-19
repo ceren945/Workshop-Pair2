@@ -1,14 +1,20 @@
 package com.etiya.workshoppair2.service.concretes;
 
+import com.etiya.workshoppair2.dto.category.GetAllCategoryResponse;
 import com.etiya.workshoppair2.dto.product.*;
+import com.etiya.workshoppair2.entity.Category;
 import com.etiya.workshoppair2.entity.Product;
+import com.etiya.workshoppair2.mapper.CategoryMapper;
 import com.etiya.workshoppair2.mapper.ProductMapper;
+import com.etiya.workshoppair2.repository.abstracts.CategoryRepository;
 import com.etiya.workshoppair2.repository.abstracts.ProductRepository;
 import com.etiya.workshoppair2.service.abstracts.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -24,7 +30,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<GetAllProductResponse> getAll() {
         List<Product> products = productRepository.getAll();
-        return ProductMapper.INSTANCE.productFromGetAllResponse(products);
+        List<GetAllProductResponse> responses = products.stream().map(product ->new
+                GetAllProductResponse(product.getId(),product.getName(),
+                product.getUnitPrice(),product.getCategory().getId())).toList();
+
+        return responses;
     }
 
     @Override
@@ -33,12 +43,16 @@ public class ProductServiceImpl implements ProductService {
         return ProductMapper.INSTANCE.productFromGetByIdResponse(product);
     }
 
+
+
+
+
     @Override
     public CreateProductResponse add(CreateProductRequest request) {
         Random random = new Random();
         Product product = ProductMapper.INSTANCE.productFromCreateRequest(request);
         product.setId(random.nextInt(1,9999));
-       productRepository.add(product);
+        productRepository.add(product);
        return ProductMapper.INSTANCE.productFromCreateResponse(product);
     }
 
@@ -61,5 +75,13 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(id);
         return ProductMapper.INSTANCE.productFromDeleteResponse(product);
 
+    }
+
+    @Override
+    public List<GetAllProductResponse> getByCategoryId(int categoryId) {
+        List<Product> products = productRepository.getAll().stream().filter(product -> product.getCategory().getId()==categoryId).toList();
+        List<GetAllProductResponse> responses = ProductMapper.INSTANCE.productFromGetAllResponse(products);
+
+        return responses;
     }
 }

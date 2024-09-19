@@ -10,4 +10,5 @@ public interface ProductRepository {
     Product add(Product product);
     Product update(Product product);
     Product delete(int id);
+    List<Product> getByCategory(int categoryId);
 }

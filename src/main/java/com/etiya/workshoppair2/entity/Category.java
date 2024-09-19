@@ -1,19 +1,18 @@
 package com.etiya.workshoppair2.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.management.ConstructorParameters;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Category{
     private int id;
     private String name;
-    private double unitPrice;
-    private int unitsInStock;
-    private Category category;
+    private List<Product> products;
+
 }

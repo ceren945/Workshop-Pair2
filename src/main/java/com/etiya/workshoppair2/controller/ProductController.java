@@ -59,6 +59,11 @@ public class ProductController {
 
   }
 
+  @GetMapping
+    public List<GetAllProductResponse> getAllProductsByCategoryId(@RequestParam int categoryId) {
+        return productService.getByCategoryId(categoryId);
+  }
+
 
 
 }
