@@ -26,6 +26,6 @@ public class User {
     @Column(name="identityno")
     private String identityNo;
 
-    @OneToOne(mappedBy = "userId")
+    @OneToOne(mappedBy = "user")
     private Cart cart;
 }

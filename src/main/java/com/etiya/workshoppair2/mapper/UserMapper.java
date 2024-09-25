@@ -2,11 +2,13 @@ package com.etiya.workshoppair2.mapper;
 
 import com.etiya.workshoppair2.dto.user.*;
 import com.etiya.workshoppair2.entity.User;
+import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
+@Mapper
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
@@ -16,7 +18,6 @@ public interface UserMapper {
 
     User userFromCreateRequest(CreateUserRequest request);
 
-    @Mapping(source="userId",target="user.id")
     CreateUserResponse userFromCreateResponse(User user);
 
     User userFromUpdateRequest(UpdateUserRequest request);

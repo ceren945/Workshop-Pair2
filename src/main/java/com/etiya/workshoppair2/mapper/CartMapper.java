@@ -23,7 +23,7 @@ public interface CartMapper {
 
     DeleteCartResponse cartFromDeleteResponse(Cart cart);
 
-
+    @Mapping(source = "userId",target="user.id" )
     Cart cartFromCreateRequest(CreateCartRequest request);
 
     Cart cartFromUpdateRequest(UpdateCartRequest request);
