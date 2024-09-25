@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateCartResponse {
     private int id;
-    private User userId;
+    private int userId;
 }

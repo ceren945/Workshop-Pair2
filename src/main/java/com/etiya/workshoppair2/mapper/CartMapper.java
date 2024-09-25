@@ -17,8 +17,10 @@ public interface CartMapper {
 
     GetByIdCartResponse cartFromGetByIdResponse(Cart cart);
 
+
     CreateCartResponse cartFromCreateResponse (Cart cart);
 
+    @Mapping(source = "user.id",target="userId" )
     UpdateCartResponse cartFromUpdateResponse (Cart cart);
 
     DeleteCartResponse cartFromDeleteResponse(Cart cart);
@@ -26,5 +28,6 @@ public interface CartMapper {
     @Mapping(source = "userId",target="user.id" )
     Cart cartFromCreateRequest(CreateCartRequest request);
 
+    @Mapping(source = "userId",target="user.id" )
     Cart cartFromUpdateRequest(UpdateCartRequest request);
 }

@@ -16,5 +16,5 @@ public class UpdateCartRequest {
     private int id;
     private LocalDate createdDate;
 
-    private User userId;
+    private int userId;
 }
