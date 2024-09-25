@@ -27,37 +27,37 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<GetAllCategoryResponse> getAll() {
-        List<Category> categories = categoryRepository.getAll();
+        List<Category> categories = categoryRepository.findAll();
         return CategoryMapper.INSTANCE.categoryFromGetAllResponse(categories);
     }
 
     @Override
     public GetByIdCategoryResponse getById(int id) {
-        Category category = categoryRepository.getById(id);
+        Category category = categoryRepository.findById(id).orElseThrow();
         return CategoryMapper.INSTANCE.categoryFromGetByIdResponse(category);
     }
 
     @Override
     public CreateCategoryResponse add(CreateCategoryRequest request) {
-        Random random = new Random();
-        Category category = CategoryMapper.INSTANCE.categoryFromCreateRequest(request);
-        category.setId(random.nextInt(1,9999));
 
-        boolean categoryWithSameName = categoryRepository.getAll()
+        Category category = CategoryMapper.INSTANCE.categoryFromCreateRequest(request);
+
+
+        boolean categoryWithSameName = categoryRepository.findAll()
                 .stream()
                 .anyMatch(c -> c.getName().equals(category.getName()));
 
         if(categoryWithSameName)
             throw new BusinessException("Böyle bir kategori zaten var");
 
-        categoryRepository.add(category);
+        categoryRepository.save(category);
         return CategoryMapper.INSTANCE.categoryFromCreateResponse(category);
     }
 
     @Override
     public UpdateCategoryResponse update(UpdateCategoryRequest request) {
         Category category = CategoryMapper.INSTANCE.categoryFromUpdateRequest(request);
-        categoryRepository.update(category);
+        categoryRepository.save(category);
 
         return CategoryMapper.INSTANCE.categoryFromUpdateResponse(category);
     }
@@ -65,8 +65,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public DeleteCategoryResponse delete(int id) {
-        Category category = categoryRepository.getById(id);
-        categoryRepository.delete(id);
+        Category category = categoryRepository.findById(id).orElseThrow();
+        categoryRepository.delete(category);
         return CategoryMapper.INSTANCE.categoryFromDeleteResponse(category);
     }
 }

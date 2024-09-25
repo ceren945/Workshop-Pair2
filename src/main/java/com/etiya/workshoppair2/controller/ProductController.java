@@ -27,8 +27,8 @@ public class ProductController {
         return productService.getAll();
     }
 
-    @GetMapping("/getById")
-    public ResponseEntity<GetByIdProductResponse> getById(@RequestParam int id) {
+    @GetMapping("/{getById}")
+    public ResponseEntity<GetByIdProductResponse> getById(@PathVariable("getById") int id) {
         if (productService.getById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -29,24 +29,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<GetAllProductResponse> getAll() {
-        List<Product> products = productRepository.getAll();
+        List<Product> products = productRepository.findAll();
         return ProductMapper.INSTANCE.productFromGetAllResponse(products);
     }
 
     @Override
     public GetByIdProductResponse getById(int id) {
-        Product product = productRepository.getById(id);
+        Product product = productRepository.findById(id).orElseThrow();
         return ProductMapper.INSTANCE.productFromGetByIdResponse(product);
     }
 
 
     @Override
     public CreateProductResponse add(CreateProductRequest request) {
-        Random random = new Random();
-        Product product = ProductMapper.INSTANCE.productFromCreateRequest(request);
-        product.setId(random.nextInt(1,9999));
 
-        boolean productWithSameName = productRepository.getAll()
+        Product product = ProductMapper.INSTANCE.productFromCreateRequest(request);
+
+
+        boolean productWithSameName = productRepository.findAll()
                 .stream()
                 .anyMatch(p -> p.getName().equals(product.getName()));
 
@@ -55,19 +55,19 @@ public class ProductServiceImpl implements ProductService {
 
 
 
-        productRepository.add(product);
+        productRepository.save(product);
        return ProductMapper.INSTANCE.productFromCreateResponse(product);
     }
 
     @Override
     public UpdateProductResponse update(UpdateProductRequest request) {
-        Product oldProduct = productRepository.getById(request.getId());
+        Product oldProduct = productRepository.findById(request.getId()).orElseThrow();
         Product product = ProductMapper.INSTANCE.productFromUpdateRequest(request);
 
         if(request.getUnitsInStock() - oldProduct.getUnitsInStock() > 100)
             throw new BusinessException("Stok adedi tek seferde maksimum 100 adet artırılabilir");
 
-        productRepository.update(product);
+        productRepository.save(product);
         return ProductMapper.INSTANCE.productFromUpdateResponse(product);
     }
 
@@ -75,12 +75,12 @@ public class ProductServiceImpl implements ProductService {
     public DeleteProductResponse delete(int id) {
 
 
-        Product product = productRepository.getById(id);
+        Product product = productRepository.findById(id).orElseThrow();
 
         if(product == null)
             throw new BusinessException("Ürün Bulunamadı");
 
-        productRepository.delete(id);
+        productRepository.delete(product);
         return ProductMapper.INSTANCE.productFromDeleteResponse(product);
 
     }

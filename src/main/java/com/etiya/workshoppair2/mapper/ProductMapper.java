@@ -17,6 +17,7 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
+    @Mapping(source="categoryId", target = "category.id")
     Product productFromCreateRequest(CreateProductRequest dto);
 
     CreateProductResponse productFromCreateResponse (Product product);
@@ -30,6 +31,7 @@ public interface ProductMapper {
     GetByIdProductResponse productFromGetByIdResponse(Product product);
 
     DeleteProductResponse productFromDeleteResponse(Product product);
+
 
 
 }
