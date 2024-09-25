@@ -17,7 +17,6 @@ public interface CartMapper {
 
     GetByIdCartResponse cartFromGetByIdResponse(Cart cart);
 
-
     CreateCartResponse cartFromCreateResponse (Cart cart);
 
     @Mapping(source = "user.id",target="userId" )

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +25,7 @@ public class Cart {
     @OneToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    @OneToMany(mappedBy = "cart")
+    private List<ProductCart> productCarts;
 }

@@ -22,6 +22,7 @@ public interface ProductMapper {
 
     CreateProductResponse productFromCreateResponse (Product product);
 
+
     Product productFromUpdateRequest(UpdateProductRequest request);
 
     UpdateProductResponse productFromUpdateResponse(Product product);

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.management.ConstructorParameters;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -32,4 +33,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name="categoryid")
     private Category category; // her ürünün tek kategorisi var
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductCart> productCarts;
 }
+
