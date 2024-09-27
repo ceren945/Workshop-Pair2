@@ -14,17 +14,21 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "product_carts")
-public class ProductCart {
+public class ProductCart  {
 
-    @Id
+    @EmbeddedId
+    private ProductCartId id;
+
     @ManyToOne
+    @MapsId("productId")
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Id
     @ManyToOne
+    @MapsId("cartId")
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
 
     @Column(name = "quantity")
     private int Quantity;
